@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+         .cssf {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: brown;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #8b5e2d;
+}
+
+    </style>
+</head>
+<body bgcolor="gray">
+      <h2 style="text-align: center; color: brown;">********* hey himanshu singh this is your crud operation using API ************</h2><hr>
+      <form action="{% url 'home' %}" class="cssf" method="post">
+        {% csrf_token %}
+        <label for="username">username</label>
+        <input type="text" name="username" id="user" placeholder="enter your username" required>
+        <label for="password">password: </label>
+        <input type="text" name="password" placeholder="enter your password " required>
+        <label for="contact">Contact:</label>
+        <input type="text" name="contact" placeholder="Enter your contact number" required>
+        
+        <button type="submit">send your data on server</button>
+      </form>
+</body>
+</html>
