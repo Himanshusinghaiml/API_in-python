@@ -4,4 +4,4 @@ from django.db import models
 class logintable(models.Model):
     username=models.CharField(max_length=50)
     password=models.CharField(max_length=50)
-    contact=models.CharField(max_length=10)
+    contact=models.CharField(max_length=100)

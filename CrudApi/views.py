@@ -1,16 +1,19 @@
+# views.py
 from django.shortcuts import render
-from django.http import HttpResponse
-from .models import logintable  # Assuming your model is named logintable
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework import status
+from .models import logintable
+from .serializers import UserSerializer
 
+@api_view(['POST'])
 def home(request):
-    if request.method == 'POST':  # Use 'POST' in uppercase
-        username = request.POST.get('username')  # Use 'POST' in uppercase
-        password = request.POST.get('password')
-        contact = request.POST.get('contact')
-        # Assuming your model is named logintable
-        save_data = logintable(username=username, password=password, contact=contact)
-        save_data.save()
+    if request.method == 'POST':
         
-        return HttpResponse("Data saved successfully")
-
-    return render(request, "crud.html")
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+def see(req):
+     return render(req,'crud.html')

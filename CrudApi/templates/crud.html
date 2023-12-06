@@ -1,59 +1,111 @@
-{% static "load static" %}
+<!-- crud.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>User Signup</title>
     <style>
-         .cssf {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-}
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-label {
-    display: block;
-    margin-bottom: 8px;
-}
+        h2 {
+            text-align: center;
+            color: #333;
+        }
 
-input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 16px;
-    box-sizing: border-box;
-}
+        #signupForm {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #fff;
+        }
 
-button {
-    background-color: brown;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+        }
 
-button:hover {
-    background-color: #8b5e2d;
-}
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
 
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
-<body bgcolor="gray">
-      <h2 style="text-align: center; color: brown;">********* hey himanshu singh this is your crud operation using API ************</h2><hr>
-      <form action="{% url 'home' %}" class="cssf" method="post">
+<body>
+    <h2>User Signup</h2>
+    <form id="signupForm">
         {% csrf_token %}
-        <label for="username">username</label>
-        <input type="text" name="username" id="user" placeholder="enter your username" required>
-        <label for="password">password: </label>
-        <input type="text" name="password" placeholder="enter your password " required>
-        <label for="contact">Contact:</label>
-        <input type="text" name="contact" placeholder="Enter your contact number" required>
         
-        <button type="submit">send your data on server</button>
-      </form>
+        <label for="username">Username:</label>
+        <input type="text" id="username" required>
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" required>
+        
+        <label for="contact">Contact:</label>
+        <input type="text" id="contact" required>
+        
+        <button type="button" onclick="submitFormData()">Sign Up</button>
+    </form>
+
+    <script>
+        function submitFormData() {
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+            var contact = document.getElementById('contact').value;
+
+            var formData = {
+                "username": username,
+                "password": password,
+                "contact": contact,
+                "csrfmiddlewaretoken": document.getElementsByName('csrfmiddlewaretoken')[0].value
+            };
+
+            fetch('/home/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                alert('User registered successfully!');
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Error registering user.');
+            });
+        }
+    </script>
 </body>
 </html>
