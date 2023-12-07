@@ -1,0 +1,15 @@
+ # FOR UPDATING  CONTENT THROUGH API  PASTE THIS URL IN BROWSERS 
+ -------------------------------------
+http://127.0.0.1:8000/api/students/3/update/  #API ENDPOINT
+
+# FOR  FETCHING  CONTENT THROUGH API 
+http://127.0.0.1:8000/api/stu/      # API ENDPOINT
+
+# FOR DELETING THE CONTENT THROUGH API 
+
+http://127.0.0.1:8000/api/students/1/     #ApI ENDPOINT
+
+# FOR INSERTING THE NEW DATA IN THE DATABASE 
+
+http://127.0.0.1:8000/see/           #API ENDPOINT
+
