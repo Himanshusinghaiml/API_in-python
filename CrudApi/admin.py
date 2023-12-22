@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import logintable, student
+from .models import logintable, student,himanshu
 
 @admin.register(logintable)
 class logintableAdmin(admin.ModelAdmin):
@@ -8,3 +8,5 @@ class logintableAdmin(admin.ModelAdmin):
 @admin.register(student)
 class StudentAdmin(admin.ModelAdmin):
     list_display = ('name', 'rollno', 'branch')  # Corrected the attribute name to list_display
+    
+admin.site.register(himanshu)

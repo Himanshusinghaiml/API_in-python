@@ -1,70 +1,70 @@
 # views.py
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 from .models import logintable
 from .serializers import UserSerializer
-from .serializers import studentdata
+from .serializers import studentdata,himanshuserializer
 from rest_framework.views import APIView 
- 
-from .models import student
-@api_view(['POST'])
-def home(request):
-    if request.method == 'POST':
-        
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-def see(req):
-     return render(req,'crud.html')
- 
 
+from .models import student,himanshu  
 
-@api_view(['POST'])
-def studentview(req):
-    if req.method=='POST':
-        serial=studentdata(data=req.data)
+@api_view(['POST','GET','DELETE'])
+def crudfun(req):
+    if req.method =='POST':
+        serial=himanshuserializer(data=req.data)
         if serial.is_valid():
             serial.save()
-            return Response(serial.data, status=status.HTTP_201_CREATED)
-        return Response(serial.errors, status=status.HTTP_400_BAD_REQUEST)
-
-# views.py
+            return Response(serial.data,status=status.HTTP_201_CREATED)
+        return Response(serial.errors,status=status.HTTP_400_BAD_REQUEST)
+    
+    elif req.method =='GET':
+        datahimanshu=himanshu.objects.all()
+        serial=himanshuserializer(datahimanshu,many=True)
+        return Response(serial.data, status=status.HTTP_200_OK)
+    
+    elif req.method == 'DELETE':
+        count = himanshu.objects.all().delete()
+        # return Response({'message ww' : '{} Tutorials were deleted successfully!'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)
+        return Response({f" deleted succesfully {count[0]} "},status=status.HTTP_204_NO_CONTENT)
  
- 
+@api_view(['GET', 'PUT', 'DELETE'])
+def crudfunid(req, pk):
+    # Retrieve the object with the given primary key (pk) or return 404 if not found
+    instance = get_object_or_404(himanshu, pk=pk)
 
-class StudentListView(APIView):
-    def get(self, request, format=None):
-        students = student.objects.all()
-        serializer = studentdata(students, many=True)
+    if req.method == 'GET':
+        # Serialize and return the data
+        serializer = himanshuserializer(instance)
         return Response(serializer.data, status=status.HTTP_200_OK)
-#delete for API
-#http://127.0.0.1:8000/api/students/10/
-class StudentDeleteView(APIView):
-    def delete(self, request, pk, format=None):
-        try:
-            student_instance = student.objects.get(pk=pk)
-            student_instance.delete()
-            return Response({"message": "Student deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
-        except student.DoesNotExist:
-            return Response({"error": "Student not found"}, status=status.HTTP_404_NOT_FOUND)
 
-from rest_framework.generics import UpdateAPIView
+    elif req.method == 'PUT':
+        # Update the instance with the new data
+        serializer = himanshuserializer(instance, data=req.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# for updating content through drf 
+    elif req.method == 'DELETE':
+        # Delete the instance
+        instance.delete()
+        return Response({'message': 'Object deleted successfully!'},status=status.HTTP_204_NO_CONTENT)
+ 
 
-class StudentUpdateView(UpdateAPIView):
-    queryset = student.objects.all()
-    serializer_class = studentdata
 
-    def update(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-        return Response(serializer.data)
+ 
+ 
+# class StudentDeleteView(APIView):
+#     def delete(self, request, pk, format=None):
+#         try:
+#             student_instance = student.objects.get(pk=pk)
+#             student_instance.delete()
+#             return Response({"message": "Student deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+#         except student.DoesNotExist:
+#             return Response({"error": "Student not found"}, status=status.HTTP_404_NOT_FOUND)
+
+ 
 def show(req):
     return render(req,'firstpage.html')

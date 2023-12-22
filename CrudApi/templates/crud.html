@@ -59,7 +59,7 @@
     </style>
 </head>
 <body>
-    <h2>User Signup</h2>
+    <!-- <h2>User Signup</h2> -->
     <form id="signupForm">
         {% csrf_token %}
         
@@ -88,7 +88,7 @@
                 "csrfmiddlewaretoken": document.getElementsByName('csrfmiddlewaretoken')[0].value
             };
 
-            fetch('/home/', {
+            fetch('http://127.0.0.1:8000/home/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
